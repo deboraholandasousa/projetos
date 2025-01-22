@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Status do Veículo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 50px;
+        }
+        .container {
+            background: #22507B;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            margin: auto;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+        }
+        button {
+            background: white;
+            color: #22507B;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1a3e5d;
+            color: white;
+        }
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Consulta de Status</h2>
+        <input type="text" id="placa" placeholder="Digite a placa" />
+        <button onclick="consultarStatus()">Consultar</button>
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+        function consultarStatus() {
+            var placa = document.getElementById("placa").value.toUpperCase();
+            fetch(`/consulta?placa=${placa}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.erro) {
+                        document.getElementById("resultado").innerText = "Placa não encontrada";
+                    } else {
+                        document.getElementById("resultado").innerText = `Status: ${data.status}`;
+                    }
+                })
+                .catch(error => console.error("Erro na consulta:", error));
+        }
+    </script>
+</body>
+</html>
